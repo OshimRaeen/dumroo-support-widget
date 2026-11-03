@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import html2canvas from "html2canvas-pro";
 import { MessageSquare, Bug, X, Send, Camera, Upload, ChevronRight } from "lucide-react";
 import { useSession } from "../providers/SessionProvider";
@@ -18,6 +18,7 @@ export default function SupportWidget() {
       content: `Hi ${user.name.split(" ")[0]}! I'm the Dumroo AI Support Assistant. How can I help you today?`,
     },
   ]);
+
   const [chatInput, setChatInput] = useState("");
   const [isChatting, setIsChatting] = useState(false);
 
@@ -30,6 +31,15 @@ export default function SupportWidget() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setChatMessages([
+      {
+        role: "assistant",
+        content: `Hi ${user.name.split(" ")[0]}! I'm the Dumroo AI Support Assistant. How can I help you today?`,
+      },
+    ]);
+  }, [user.id, user.name]);
 
   // --- Chat Functions ---
   const sendChatMessage = async () => {
@@ -219,7 +229,7 @@ export default function SupportWidget() {
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
                   placeholder="Ask a question..."
-                  className="flex-1 border rounded-full px-4 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="flex-1 border rounded-full px-4 py-2 text-sm font-medium text-slate-900 focus:outline-none focus:border-blue-500"
                 />
                 <button onClick={sendChatMessage} disabled={isChatting} className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:opacity-50">
                   <Send size={18} />
@@ -275,7 +285,10 @@ export default function SupportWidget() {
                   {/* Issue Details */}
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Issue Category</label>
-                    <select value={issueType} onChange={(e) => setIssueType(e.target.value as IssueType)} className="w-full border p-2 rounded text-sm focus:outline-none focus:border-blue-500 bg-white">
+                    <select value={issueType} onChange={(e) => setIssueType(e.target.value as IssueType)} className="w-full border border-slate-300 p-2 rounded text-sm font-medium text-slate-900 bg-white focus:outline-none focus:border-blue-500">
+                      <option value="" disabled className="text-slate-500">
+                      Select issue category
+                      </option>  
                       <option value="General Feedback">General Feedback</option>
                       <option value="Data Discrepancy">Data Discrepancy / Error</option>
                       <option value="UI / Visual Bug">UI / Visual Bug</option>
@@ -290,7 +303,7 @@ export default function SupportWidget() {
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                       placeholder="Please describe the issue..."
-                      className="w-full border p-3 rounded text-sm h-28 resize-none focus:outline-none focus:border-blue-500"
+                      className="w-full border p-3 rounded text-sm font-medium text-slate-900 h-28 resize-none focus:outline-none focus:border-blue-500"
                     />
                   </div>
 

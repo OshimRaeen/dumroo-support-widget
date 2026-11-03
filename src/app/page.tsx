@@ -111,9 +111,34 @@ export default function DashboardPage() {
             <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
               <h3 className="font-semibold text-slate-700 flex items-center gap-2"><Users size={18} /> Student Roster</h3>
             </div>
-            <div className="p-6 text-sm text-slate-500 flex flex-col items-center justify-center py-12">
-              <p>Roster data loaded successfully.</p>
-            </div>
+            <div className="p-0 overflow-x-auto">
+              <table className="w-full text-sm text-left text-slate-500">
+                <thead className="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
+                 <tr>
+                   <th className="px-6 py-3">Student Name</th>
+                   <th className="px-6 py-3">Current Grade</th>
+                   <th className="px-6 py-3">Status</th>
+                 </tr>
+                </thead>
+             <tbody>
+            <tr className="bg-white border-b border-slate-100">
+            <td className="px-6 py-3 font-medium text-slate-900">Alex Rivera</td>
+           <td className="px-6 py-3">B+</td>
+           <td className="px-6 py-3"><span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold uppercase">Active</span></td>
+           </tr>
+           <tr className="bg-white border-b border-slate-100">
+            <td className="px-6 py-3 font-medium text-slate-900">Maya Lin</td>
+            <td className="px-6 py-3">A</td>
+           <td className="px-6 py-3"><span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold uppercase">Active</span></td>
+          </tr>
+          <tr className="bg-white">
+            <td className="px-6 py-3 font-medium text-slate-900">Jordan Smith</td>
+            <td className="px-6 py-3">C-</td>
+            <td className="px-6 py-3"><span className="bg-amber-100 text-amber-700 px-2 py-1 rounded text-[10px] font-bold uppercase">At Risk</span></td>
+         </tr>
+         </tbody>
+       </table>
+           </div>
           </div>
         </div>
 
@@ -142,16 +167,17 @@ export default function DashboardPage() {
                     <p className="text-sm text-slate-600 italic mb-3">"{ticket.comment}"</p>
                     
                     {/* Groq AI Triage Result */}
-                    <div className="bg-white p-3 rounded border border-slate-200 text-xs mb-3 space-y-1">
-                      <div className="font-semibold flex items-center justify-between text-slate-700 mb-1">
-                        <span>🤖 Groq Triage</span>
-                        <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${
-                          ticket.ai_severity === 'High' ? 'bg-red-100 text-red-700' : ticket.ai_severity === 'Medium' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
-                        }`}>{ticket.ai_severity} Priority</span>
-                      </div>
-                      <p><span className="font-medium">Summary:</span> {ticket.ai_summary}</p>
-                      <p><span className="font-medium">Action:</span> {ticket.ai_suggested_fix}</p>
-                    </div>
+                   
+                   <div className="bg-slate-50 p-3 rounded border border-slate-200 text-xs mb-3 space-y-1 text-slate-800">
+                  <div className="font-semibold flex items-center justify-between text-slate-900 mb-1">
+                  <span>🤖 Groq Triage</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${
+                 ticket.ai_severity === 'High' ? 'bg-red-100 text-red-700' : ticket.ai_severity === 'Medium' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                }`}>{ticket.ai_severity} Priority</span>
+                </div>
+                <p><span className="font-semibold text-slate-900">Summary:</span> {ticket.ai_summary}</p>
+                <p><span className="font-semibold text-slate-900">Action:</span> {ticket.ai_suggested_fix}</p>
+                </div>
 
                     <div className="flex items-center justify-between text-[11px] font-medium mt-2 pt-3 border-t border-slate-200">
                       <div className="flex items-center gap-1 text-slate-500">
