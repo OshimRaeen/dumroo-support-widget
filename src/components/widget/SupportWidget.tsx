@@ -127,6 +127,7 @@ export default function SupportWidget() {
 
     setIsSubmitting(true);
     try {
+      const customWebhook = localStorage.getItem("dumroo_custom_webhook") || undefined;
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -139,6 +140,7 @@ export default function SupportWidget() {
           pageUrl: window.location.pathname,
           userAgent: navigator.userAgent,
           screenshotBase64: screenshotPreview,
+          customWebhookUrl: customWebhook,
         }),
       });
 
