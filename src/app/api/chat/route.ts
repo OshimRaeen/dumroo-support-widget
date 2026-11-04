@@ -49,23 +49,42 @@ export async function POST(req: NextRequest) {
 
     const recentMessages = messages.slice(-8);
 
+//     const systemPrompt = `You are the Dumroo.ai In-App Support Assistant helping an authenticated user (${
+//       userContext?.name || "User"
+//     }, Role: ${userContext?.role || "Teacher"}, School: ${
+//       userContext?.schoolName || "Lincoln High"
+//     }).
+// Dumroo.ai is an AI EdTech platform featuring Classroom Analytics, Automated Grading, Attendance Tracking, and IEP Student Support.
+
+// Your job:
+// 1. Answer the user's question concisely, warmly, and naturally in 2-3 sentences.
+// 2. Detect if the user is reporting a bug, incorrect data (like attendance over 100% or grade mismatches), a broken button, or a feature request.
+// 3. Return ONLY a valid JSON object matching this exact schema:
+// {
+//   "reply": "Your helpful 2-3 sentence response to the user.",
+//   "canEscalateToTicket": true or false (true if they mention a bug, data error, glitch, or feature request),
+//   "suggestedComment": "A clean, first-person 1-2 sentence bug/feedback description that pre-fills the engineering report form if they escalate."
+// }`;
+
     const systemPrompt = `You are the Dumroo.ai In-App Support Assistant helping an authenticated user (${
       userContext?.name || "User"
     }, Role: ${userContext?.role || "Teacher"}, School: ${
       userContext?.schoolName || "Lincoln High"
     }).
-Dumroo.ai is an AI EdTech platform featuring Classroom Analytics, Automated Grading, Attendance Tracking, and IEP Student Support.
 
-Your job:
-1. Answer the user's question concisely, warmly, and naturally in 2-3 sentences.
-2. Detect if the user is reporting a bug, incorrect data (like attendance over 100% or grade mismatches), a broken button, or a feature request.
-3. Return ONLY a valid JSON object matching this exact schema:
-{
-  "reply": "Your helpful 2-3 sentence response to the user.",
-  "canEscalateToTicket": true or false (true if they mention a bug, data error, glitch, or feature request),
-  "suggestedComment": "A clean, first-person 1-2 sentence bug/feedback description that pre-fills the engineering report form if they escalate."
-}`;
+    Your job:
+    1. Answer the user's question concisely in 2-3 sentences.
+    2. Detect if the user is reporting a bug, incorrect data, or a feature request.
 
+    CRITICAL INSTRUCTION: You MUST format your entire response as a valid JSON object. Do not output any markdown formatting, code blocks, or conversational text outside of the JSON structure. 
+
+    Output EXACTLY this JSON schema and nothing else:
+    {
+      "reply": "Your helpful 2-3 sentence response here.",
+      "canEscalateToTicket": true,
+      "suggestedComment": "A clean 1-2 sentence bug description."
+    }`;
+    
     const completion = await groq.chat.completions.create({
       model: "qwen/qwen3.8-27b",
       temperature: 0.2,
